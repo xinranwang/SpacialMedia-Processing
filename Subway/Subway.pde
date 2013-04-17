@@ -64,7 +64,6 @@ void setup() {
       frames.add(frame);
     }
   }
-  println(frames.get(frames.size()-1).x);
 }
 
 void draw() {
@@ -116,7 +115,7 @@ void draw() {
         frames.get(i).isSelected = false;
       }
       pg.endDraw();
-      pg.save("pic.png");
+      pg.save("pic"+ year() + "_" + month()+ "_" + day() + "_" + hour() + "_" + minute() + "_" + second() + "_" + millis() +".png");
       println("image saved.");
     }
   }
