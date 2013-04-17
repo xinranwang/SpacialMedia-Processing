@@ -8,6 +8,8 @@ int blockHeight;
 ArrayList<Pillar> pillars = new ArrayList<Pillar>();
 ArrayList<Frame> frames = new ArrayList<Frame>();
 
+PGraphics pg;
+
 void setup() {
   size(1280, 720);
 
@@ -31,6 +33,9 @@ void setup() {
     cam.start();
   }
 
+  pg = createGraphics(width, height);
+
+  // add pillars
   for (int i = 0; i < 5; i++) {
     pillars.add(new Pillar(100 + i * 300, 1));
   }
@@ -39,10 +44,12 @@ void setup() {
     pillars.add(new Pillar(40 + i * 200, 3));
   }
 
+  // sort pillars
   Collections.sort(pillars);
 
+  // add frames
   for (int i = 0; i < pillars.size() - 1; i++) {
-    if (pillars.get(i+1).left - pillars.get(i).right > 0 && pillars.get(i).left < width) {
+    if (pillars.get(i+1).left - pillars.get(i).right > 0 && pillars.get(i+1).right < width) {
       PImage img;
       Frame frame;
       if (i == 0) {
@@ -57,6 +64,7 @@ void setup() {
       frames.add(frame);
     }
   }
+  println(frames.get(frames.size()-1).x);
 }
 
 void draw() {
@@ -71,26 +79,53 @@ void draw() {
     // The following does the same, and is faster when just drawing the image
     // without any additional resizing, transformations, or tint.
     //set(0, 0, cam);
-
+    
+    background(0);
     // draw pillars
-    noStroke();
-    fill(0);
-    rect(0, 0, width, blockHeight);
-    rect(0, height - blockHeight, width, blockHeight);
+//    noStroke();
+//    fill(0);
+//    rect(0, 0, width, blockHeight);
+//    rect(0, height - blockHeight, width, blockHeight);
+//
+//    for (int i = 0; i < pillars.size(); i++) {
+//      pillars.get(i).draw();
+//      //println(pillars.get(i).x);
+//    }
 
-    for (int i = 0; i < pillars.size(); i++) {
-      pillars.get(i).draw();
-      //println(pillars.get(i).x);
-    }
-
+    // update frames
     for (int i = 0; i < frames.size(); i++) {
       PImage img = cam.get((int)frames.get(i).x, (int)frames.get(i).y, (int)frames.get(i).w, (int)frames.get(i).h);
       if (!frames.get(i).isSelected) {
         frames.get(i).updateImg(img);
       }
-      frames.get(i).checkSelected();
+      //frames.get(i).checkSelected();
       frames.get(i).draw();
     }
+
+    int count = 0;
+    for (int i = 0; i < frames.size(); i++) {
+      if (frames.get(i).isSelected == true) count++;
+    }
+    
+    if (count == frames.size()) {
+      pg.beginDraw();
+      pg.background(0);
+      for (int i = 0; i < frames.size(); i++) {
+        PImage img = frames.get(i).img;
+        pg.image(img, frames.get(i).x, frames.get(i).y);
+        frames.get(i).isSelected = false;
+      }
+      pg.endDraw();
+      pg.save("pic.png");
+      println("image saved.");
+    }
+  }
+}
+
+void mouseClicked() {
+  for(int i = 0; i < frames.size(); i++) {
+    if(mouseX > frames.get(i).x && mouseX < frames.get(i).x+frames.get(i).w && mouseY > frames.get(i).y && mouseY < frames.get(i).y+frames.get(i).h) 
+      frames.get(i).isSelected = true;
   }
 }
 

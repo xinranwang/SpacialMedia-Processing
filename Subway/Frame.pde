@@ -18,9 +18,9 @@ class Frame {
     img = _img;
   }
   
-  void checkSelected() {
-    if(mouseX > x && mouseX < x+w && mouseY > y && mouseY < y+h) isSelected = true;
-  }
+//  void checkSelected() {
+//    if(mouseX > x && mouseX < x+w && mouseY > y && mouseY < y+h) isSelected = true;
+//  }
   
   void draw() {
     image(img, x, y);
