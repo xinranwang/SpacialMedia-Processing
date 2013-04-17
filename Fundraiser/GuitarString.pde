@@ -20,7 +20,7 @@ class GuitarString {
     index1 = _index1;
     index2 = _index2;
     stringColor = color(random(255), random(255), random(255));
-    controlPoint.set(tables2.get(index2).x, tables2.get(index2).y, 0);
+    controlPoint.set(tables2.get(index2).x, height - 250, 0);
     k = (tables2.get(index2).x - tables1.get(index1).x) / (tables2.get(index2).y - tables1.get(index1).y);
   }
 
@@ -41,7 +41,8 @@ class GuitarString {
       if (shakeCount > 20) {
         shakeCount = 0;
         isShaking = false;
-        controlPoint.set(tables2.get(index2).x, tables2.get(index2).y, 0);
+        //controlPoint.set(tables2.get(index2).x, tables2.get(index2).y, 0);
+        controlPoint.set(tables2.get(index2).x, height - 250, 0);
       }
     }
   }
@@ -54,7 +55,10 @@ class GuitarString {
 //    else strokeWeight(1);
     beginShape();
     vertex(tables1.get(index1).x, tables1.get(index1).y);
-    bezierVertex(controlPoint.x, controlPoint.y, tables2.get(index2).x, tables2.get(index2).y, tables2.get(index2).x, tables2.get(index2).y);
+    vertex(tables1.get(index1).x, 250);
+    //bezierVertex(controlPoint.x, controlPoint.y, tables2.get(index2).x, tables2.get(index2).y, tables2.get(index2).x, tables2.get(index2).y);
+    bezierVertex(controlPoint.x, controlPoint.y, tables2.get(index2).x, height - 250, tables2.get(index2).x, height - 250);
+    vertex(tables2.get(index2).x, tables2.get(index2).y);
     endShape();
     //line(tables1.get(index1).x, tables1.get(index1).y, tables2.get(index2).x, tables2.get(index2).y);
   }
